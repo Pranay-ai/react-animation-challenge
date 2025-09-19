@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+**React Animation Challenge**
 
-## Getting Started
+Small Next.js app showcasing a custom CSS animation sequence: a star icon animates in with motion/rotation/glow, a top border and twin arcs fill in, the layout shifts, “ELEVATE” fades in, then the whole sequence vanishes. Built with modern Next.js, React, and Tailwind CSS utilities plus a few hand-rolled keyframes and clip-path tricks.
 
-First, run the development server:
+**Tech Stack**
+- **Framework:** Next.js 15 (App Router)
+- **UI:** React 19
+- **Styles:** Tailwind CSS v4 via `@tailwindcss/postcss`
+- **Build/Lint:** Next toolchain + ESLint flat config
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Getting Started**
+- **Prerequisite:** Node.js 18.18+ (or 20+ recommended)
+- **Install:** `npm install`
+- **Dev server:** `npm run dev` then open `http://localhost:3000`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Scripts**
+- `dev`: Start Next.js in development
+- `build`: Create production build
+- `start`: Run production server
+- `lint`: Run ESLint
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+**Project Structure**
+- `app/page.js`: Renders the sequence (`StarSVG`, `AnimatedArc`, and “ELEVATE”).
+- `app/layout.js`: App Router layout shell and global setup.
+- `app/globals.css`: Tailwind import plus custom keyframes/utilities.
+- `app/components/StartSVG.jsx`: Star composed from 4 clipped quadrants.
+- `app/components/AnimatedArc.jsx`: Two tiles filling to draw mirrored arcs with an SVG outline.
+- `public/`: Static assets.
+- `next.config.mjs`, `postcss.config.mjs`, `eslint.config.mjs`: Tooling configuration.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Animation Notes**
+- **Keyframes:** `growX` (left-to-right fill), `growY` (bottom-to-top fill), `star-move-rotate-scale`, `star-glow-seq`, `shift-down`, `fade-in-up`, `vanish-all`.
+- **Utilities:** `.star-wrapper` drives motion + glow; `.shift-down-seq` offsets the stack; `.elevate-text` fades/slides in; `.sequence-root` fades everything out.
+- **Timeline:** Star animates ~1.8s, glow at 1.8–2.8s, container shift at 2.8–3.4s, “ELEVATE” appears at ~3.4s, sequence vanishes around 4.4s.
+- **Techniques:** `clip-path: ellipse(...)` creates the star/arcs; an SVG overlay draws the top border and arc strokes.
 
-## Learn More
+**Customization**
+- **Timing:** Adjust delays/durations in `app/globals.css` to speed up or stagger elements.
+- **Sizing:** Tweak fixed sizes (e.g., `110px`) in components to scale the star/arc.
+- **Styling:** Replace the black/white palette or update text/content in `app/page.js`.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Deploy**
+- **Production build:** `npm run build` then `npm start`.
+- **Vercel:** This app is Next.js-native and deploys seamlessly to Vercel.
