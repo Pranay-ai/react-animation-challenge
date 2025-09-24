@@ -1,49 +1,121 @@
 export default function AnimatedArc() {
   return (
-    <div className="relative w-[220px] h-[110px]">
-      {/* Left tile */}
-      <div className="absolute left-0 top-0 w-[110px] h-[110px] overflow-hidden">
-        {/* animated white fill left to right */}
-        <div className="absolute inset-0 bg-white animate-[growX_2s_linear_forwards]" />
-        {/* clipped black shape */}
-        <div className="relative w-full h-full bg-black [clip-path:ellipse(100%_100%_at_0%_100%)]" />
+    <div className="df-root arc">
+      <div className="diagonal-box left">
+        <div className="fill-layer" />
+        <div className="overlay-circle" />
+      </div>
+      <div className="diagonal-box right">
+        <div className="fill-layer" />
+        <div className="overlay-circle-right" />
       </div>
 
-      {/* Right tile */}
-      <div className="absolute right-0 top-0 w-[110px] h-[110px] overflow-hidden">
-        {/* animated white fill bottom to top */}
-        <div className="absolute inset-0 bg-white animate-[growY_2s_linear_forwards]" />
-        {/* clipped black shape */}
-        <div className="relative w-full h-full bg-black [clip-path:ellipse(100%_100%_at_100%_100%)]" />
-      </div>
-
-      {/* Border on top of both tiles */}
-      <svg
-        className="absolute inset-0 pointer-events-none"
-        viewBox="0 0 440 220"
-        fill="none"
-      >
-        <path
-          d="M0 0 H440"
-          stroke="white"
-          strokeWidth="1.5"
-          vectorEffect="non-scaling-stroke"
-        />
-        <path
-          d="M0 0 A220 220 0 0 1 220 220"
-          stroke="white"
-          strokeWidth="1.5"
-          fill="none"
-          vectorEffect="non-scaling-stroke"
-        />
-        <path
-          d="M440 0 A220 220 0 0 0 220 220"
-          stroke="white"
-          strokeWidth="1.5"
-          fill="none"
-          vectorEffect="non-scaling-stroke"
-        />
-      </svg>
+      <style>{`
+        .df-root {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0;
+          background: black;
+          margin: 0;
+        }
+        .diagonal-box {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          background: black;
+          overflow: hidden;
+        }
+        .fill-layer {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top right, white 50%, transparent 50%);
+          background-size: 200% 200%;
+          background-position: top right;
+          animation: diagonalFill 1s ease-out forwards;
+        }
+        .left .fill-layer {
+          animation-delay: 0.5s; /* starts at 0.5s */
+        }
+        .right .fill-layer {
+          animation-delay: 1s; /* starts at 1s */
+        }
+        @keyframes diagonalFill {
+          to {
+            background-position: bottom left;
+          }
+        }
+        .overlay-circle {
+          position: absolute;
+          width: 200%;
+          height: 200%;
+          bottom: 0;
+          left: 0;
+          transform: translate(-50%, 50%);
+          border-radius: 50%;
+          background: black;
+          pointer-events: none;
+          z-index: 1;
+        }
+        .overlay-circle::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 3px solid white;
+          clip-path: inset(0 0 50% 50%); 
+          opacity: 0;
+          animation: revealBorderRightToTop 0.5s ease-out forwards;
+          animation-delay: 0s;
+        }
+        .overlay-circle-right {
+          position: absolute;
+          width: 200%;
+          height: 200%;
+          bottom: 0;
+          right: 0;
+          transform: translate(50%, 50%);
+          border-radius: 50%;
+          background: black;
+          pointer-events: none;
+          z-index: 1;
+        }
+        .overlay-circle-right::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 50%;
+          border: 3px solid white;
+          clip-path: inset(0 50% 50% 0);
+          opacity: 0;
+          animation: revealBorderLeftToTop 0.5s ease-out forwards;
+          animation-delay: 0s;
+        }
+        @keyframes revealBorderRightToTop {
+          0% {
+            opacity: 1;
+            clip-path: inset(0 0 50% 50%);
+            transform: rotate(90deg);
+          }
+          100% {
+            opacity: 1;
+            clip-path: inset(0 0 50% 50%);
+            transform: rotate(0deg);
+          }
+        }
+        @keyframes revealBorderLeftToTop {
+          0% {
+            opacity: 1;
+            clip-path: inset(0 50% 50% 0);
+            transform: rotate(-90deg);
+          }
+          100% {
+            opacity: 1;
+            clip-path: inset(0 50% 50% 0);
+            transform: rotate(0deg);
+          }
+        }
+      `}</style>
     </div>
   );
 }
